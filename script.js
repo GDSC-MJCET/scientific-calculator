@@ -13,6 +13,7 @@ Array.from(buttons).forEach((button) => {
     case "AC":
     string="";
     updateDisplay("0");
+    expr.textContent = "";
     break;
 //FOR DEL
     case "DEL":
@@ -57,16 +58,32 @@ Array.from(buttons).forEach((button) => {
         break;
 //FOR E
     case "e":
-        string = Math.E.toFixed(2);
-        updateDisplay(string);
+        if(string === "" || string === "0"){
+            string = Math.E.toFixed(2);
+            updateDisplay(string);
+        }
+        else{
+            string = Number((Math.E * string).toFixed(2));
+            updateDisplay(string);
+        }
         break;
 //FOR PI
     case "π":
-        string = Math.PI.toFixed(2);
+        if(string === "" || string === "0"){
+            string = Math.PI.toFixed(2);
+            updateDisplay(string);
+        }
+        else{        
+        string = Number((Math.PI * string).toFixed(2));
         updateDisplay(string);
+        }
         break;
 //FOR SQRT
     case "√":
+    if(string < "0"){
+        string = "ERROR!";
+        updateDisplay(string);
+    }
         if(string !== ""){
         string = (Math.sqrt(Number(string))).toFixed(2);
         updateDisplay(string);
@@ -75,12 +92,16 @@ Array.from(buttons).forEach((button) => {
 //FOR SQUARE
     case "x²":
     if(string !== ""){
-        string = (Number(string) ** 2).toFixed(2);
+        string = (Number(string) ** 2).toFixed(0);
         updateDisplay(string);
     }
     break;
 //FOR FACTORIAL
     case "x!":
+    if(string < "0"){
+        string = "ERROR!";
+        updateDisplay(string);
+    }
     if(string !== ""){
         string = factorial(Number(string)).toFixed(2);
         updateDisplay(string);
@@ -112,6 +133,10 @@ Array.from(buttons).forEach((button) => {
     break;
 //FOR LOG
     case "log":
+    if(string < "0"){
+        string = "ERROR!";
+        updateDisplay(string);
+    }           
     if(string !== ""){
         let result = Math.log10(Number(string));
         string = Number(result.toFixed(2)).toString();
@@ -120,9 +145,29 @@ Array.from(buttons).forEach((button) => {
     break;
 //FOR Ln
     case "ln":
+    if(string < "0"){
+        string = "ERROR!";
+        updateDisplay(string);
+    }        
     if(string !== ""){
         let result = Math.log(Number(string));
         string = Number(result.toFixed(2)).toString();
+        updateDisplay(string);
+    }
+    break;
+//FOR +/-
+    case "+/-":
+    if(string > 0){
+        string = string*-1
+        // string = Math.abs(string);
+        updateDisplay(string);
+    }
+    else if(string < 0){
+        string = string*-1;
+        updateDisplay(string);
+    }    
+    else{
+        string = "Be Wiser";
         updateDisplay(string);
     }
     break;
@@ -160,9 +205,13 @@ document.addEventListener("keydown", (e)=>{
     }
 
     if(e.key === "Enter"){
-    if(string === ""){
+    
+    if(expr.textContent !== ""){
+        string = "";
+        expr.textContent = "";
         updateDisplay("0");
-    }
+        return;
+    }    
 
     let exp=string;
     exp= exp.replaceAll("×","*");
@@ -184,7 +233,7 @@ document.addEventListener("keydown", (e)=>{
 
     if(e.key === "Backspace"){
         string=string.slice(0,-1);
-            if(string === ""){
+    if(string === ""){
        updateDisplay("0");
     }
     else{
