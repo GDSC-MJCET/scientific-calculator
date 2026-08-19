@@ -44,7 +44,7 @@ Array.from(buttons).forEach((button) => {
          break;
          }
         expr.textContent = string;
-        string = (result.toFixed(2)).toString();
+        string = (result.toFixed(0)).toString();
         updateDisplay(string);
     }
     catch{
@@ -168,6 +168,13 @@ Array.from(buttons).forEach((button) => {
     }    
     else{
         string = "Be Wiser";
+        updateDisplay(string);
+    }
+    break;
+//FOR mod
+    case "mod":
+    if(string !== ""){
+        string += "%";
         updateDisplay(string);
     }
     break;
